@@ -5,7 +5,7 @@ import { injectable } from 'inversify';
 @injectable()
 export class UserRepository {
   async getAllData(): Promise<IUser[]> {
-    return await User.find();
+    return await User.find().select('-password').exec();
   }
 
   async findUser(email: string): Promise<IUser> {

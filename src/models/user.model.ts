@@ -19,6 +19,10 @@ const userSchema = new Schema(
       type: String,
       required: false,
     },
+    emailConfirmed: {
+      type: Boolean,
+      required: true,
+    },
   },
   { timestamps: true }
 );

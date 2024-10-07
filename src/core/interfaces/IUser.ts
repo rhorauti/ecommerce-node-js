@@ -5,4 +5,5 @@ export interface IUser {
   avatar?: string;
   createAt?: Date;
   updateAt?: Date;
+  emailConfirmed: boolean;
 }

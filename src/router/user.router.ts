@@ -8,7 +8,32 @@ const routerUser = Router();
 const userController = container.get<UserController>(TYPES.UserController);
 
 routerUser.post(
-  `/user/signup`,
+  '/user/login',
+  [
+    body('email')
+      .notEmpty()
+      .withMessage('O campo email não pode estar vazio!')
+      .isEmail()
+      .withMessage('Formato de email inválido!'),
+    body('password').notEmpty().withMessage('O campo senha não pode estar vazio!'),
+  ],
+  (request: Request, response: Response, next: NextFunction) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+      return response.status(400).json({
+        status: false,
+        message: errors.array()[0].msg,
+      });
+    }
+    next();
+  },
+  (request: Request, response: Response, next: NextFunction) => {
+    userController.authenticateUser(request, response, next);
+  }
+);
+
+routerUser.post(
+  '/user/signup',
   [
     body('email')
       .notEmpty()
@@ -30,15 +55,12 @@ routerUser.post(
   (request: Request, response: Response, next: NextFunction) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-      const firstError = errors.array()[0];
-      return response
-        .status(400)
-        .json({ status: false, message: firstError.msg, param: firstError.type });
+      return response.status(400).json({ status: false, message: errors.array()[0].msg });
     }
-    next();
+    return next();
   },
   (request: Request, response: Response, next: NextFunction) => {
-    userController.onUserCreation(request, response, next);
+    userController.addNewUser(request, response, next);
   }
 );
 
