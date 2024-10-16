@@ -1,5 +1,5 @@
 import { CustomError } from '@src/core/interfaces/IError';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request } from 'express';
 import { sign, verify } from 'jsonwebtoken';
 
 export const createToken = (request: Request, next: NextFunction): string => {
@@ -19,18 +19,14 @@ export const createToken = (request: Request, next: NextFunction): string => {
   }
 };
 
-export const checkToken = (request: Request, response: Response, next: NextFunction) => {
-  if (request.path.includes('/v1/user/login') || request.path.includes('/v1/user/signup')) {
-    next();
-  } else {
-    try {
-      const token = request.headers.authorization.split(' ')[1];
-      const payload = verify(token, process.env.SECRET_KEY);
-      next();
-    } catch (error) {
-      (error as CustomError).statusCode = 401;
-      (error as CustomError).message = 'Usuário não autorizado!';
-      next(error);
-    }
+export const verifyToken = (token: string, next: NextFunction) => {
+  try {
+    const decoded = verify(token, process.env.SECRET_KEY);
+    return decoded;
+  } catch (error) {
+    const customError = error as CustomError;
+    customError.message = 'Token inválido!';
+    customError.statusCode = 401;
+    next(error);
   }
 };

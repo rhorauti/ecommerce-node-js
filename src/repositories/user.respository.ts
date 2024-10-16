@@ -15,4 +15,8 @@ export class UserRepository {
   async createNewData(userData: IUser): Promise<IUser> {
     return await User.create(userData);
   }
+
+  async updateData(data: IUser): Promise<IUser> {
+    return await User.findOneAndUpdate({ _id: data.id }, data, { new: true });
+  }
 }

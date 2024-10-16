@@ -5,4 +5,6 @@ const mongodb = mongoose
   .then((result) => {})
   .catch((error) => console.log(error));
 
+mongoose.set('debug', true);
+
 export { mongodb };
