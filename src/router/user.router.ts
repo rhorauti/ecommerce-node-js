@@ -83,7 +83,6 @@ routerUser.get(
 routerUser.post(
   '/user/password-recover',
   (request: Request, response: Response, next: NextFunction) => {
-    console.log('password-recover', request.body.email);
     userController.sendRecoverEmail(request, response, next);
   }
 );

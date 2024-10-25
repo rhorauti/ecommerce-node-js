@@ -7,7 +7,6 @@ export const errorHandling = (
   response: Response,
   next: NextFunction
 ): Response => {
-  console.log('entrando middleware error')
   if (!error.statusCode) error.statusCode = 500;
   if (!error.message) error.message = 'Erro interno do servidor';
   if (!error.status) error.status = false;

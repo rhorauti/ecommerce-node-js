@@ -10,11 +10,9 @@ export const onCheckValidToken = (request: Request, response: Response, next: Ne
     request.path.includes('v1/user/password-recover') ||
     request.path.includes('v1/user/new-password')
   ) {
-    console.log('jwt token skip condition...')
     next();
   } else {
     try {
-      console.log('headers', request.headers);
       const token = request.headers.authorization.split(' ')[1];
       const decoded = verifyToken(token, next);
       if (decoded) {

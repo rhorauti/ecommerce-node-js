@@ -70,7 +70,12 @@ export class UserController {
             status: true,
             token: token,
             message: 'Usuário logado com sucesso!',
-            data: user,
+            data: {
+              id: user._id,
+              username: user.username,
+              email: user.email,
+              avatar: user.avatar,
+            },
           });
         }
       }
