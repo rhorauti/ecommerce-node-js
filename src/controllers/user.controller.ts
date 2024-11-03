@@ -1,6 +1,5 @@
 import { TYPES } from '@src/containers/types';
 import { CustomError } from '@src/core/interfaces/IError';
-import { IUser } from '@src/core/interfaces/IUser';
 import { UserRepository } from '@src/repositories/user.respository';
 import { EmailSender } from '@src/services/email.service';
 import { decodePassword, encodePassword } from '@src/services/hash.service';
@@ -71,7 +70,7 @@ export class UserController {
             token: token,
             message: 'Usuário logado com sucesso!',
             data: {
-              id: user._id,
+              id: user.id,
               username: user.username,
               email: user.email,
               avatar: user.avatar,
@@ -124,7 +123,7 @@ export class UserController {
         error.statusCode = 401;
         next(error);
       } else {
-        const hashedPassword = await encodePassword(request.body.password, next)
+        const hashedPassword = await encodePassword(request.body.password, next);
         user.password = hashedPassword;
         const updatedUser = await this.userRepository.updateData(user);
         if (!updatedUser) {

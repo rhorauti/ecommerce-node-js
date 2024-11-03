@@ -1,22 +1,22 @@
 import { IUser } from '@src/core/interfaces/IUser';
-import { User } from '@src/models/user.model';
+import { UserModel } from '@src/models/user.model';
 import { injectable } from 'inversify';
 
 @injectable()
 export class UserRepository {
-  async getAllData(): Promise<IUser[]> {
-    return await User.find().select('-password').exec();
+  async getAllUsers(): Promise<IUser[]> {
+    return await UserModel.find().select('-password').exec();
   }
 
   async findUser(email: string): Promise<IUser> {
-    return await User.findOne({ email: email });
+    return await UserModel.findOne({ email: email });
   }
 
   async createNewData(userData: IUser): Promise<IUser> {
-    return await User.create(userData);
+    return await UserModel.create(userData);
   }
 
   async updateData(data: IUser): Promise<IUser> {
-    return await User.findOneAndUpdate({ _id: data.id }, data, { new: true });
+    return await UserModel.findOneAndUpdate({ _id: data.id }, data, { new: true });
   }
 }
